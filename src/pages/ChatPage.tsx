@@ -29,6 +29,7 @@ const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [lastToolCall, setLastToolCall] = useState<{ tool: string; timestamp: string } | null>(null);
   const [threadId, setThreadId] = useState<string | null>(null);
   const [pageData, setPageData] = useState<PageData | null>(null);
   const contentRef = useRef<HTMLIonContentElement>(null);
@@ -36,6 +37,22 @@ const ChatPage: React.FC = () => {
 
   useEffect(() => {
     initializeChat();
+  }, []);
+
+  useEffect(() => {
+    const handler = (event: Event) => {
+      const custom = event as CustomEvent<any>;
+      const detail = custom.detail || {};
+      if (typeof detail.tool === 'string') {
+        setLastToolCall({
+          tool: detail.tool,
+          timestamp: typeof detail.timestamp === 'string' ? detail.timestamp : new Date().toISOString(),
+        });
+      }
+    };
+
+    window.addEventListener('agent_tool_called', handler as EventListener);
+    return () => window.removeEventListener('agent_tool_called', handler as EventListener);
   }, []);
 
   useEffect(() => {
@@ -187,7 +204,7 @@ const ChatPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent ref={contentRef} className="chat-content">
-        <div style={{ padding: '16px', paddingBottom: '100px' }}>
+        <div style={{ padding: '16px', paddingBottom: '148px' }}>
           {messages.map(renderMessage)}
           {isLoading && (
             <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '12px' }}>
@@ -207,6 +224,15 @@ const ChatPage: React.FC = () => {
             </div>
           )}
           <div ref={messagesEndRef} />
+        </div>
+
+        <div className="tool-status-bar">
+          <div className="tool-status-bar__content">
+            <span className="tool-status-bar__label">Tool</span>
+            <span className="tool-status-bar__value">
+              {lastToolCall ? lastToolCall.tool : '—'}
+            </span>
+          </div>
         </div>
 
         <div

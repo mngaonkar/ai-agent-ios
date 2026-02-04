@@ -6,6 +6,23 @@ export class MermaidDiagramTool extends Tool {
   description = "Create a Mermaid diagram from code. Use this when users ask for diagrams, flowcharts, sequence diagrams, class diagrams, or any visual representation. Input should be Mermaid diagram code.";
   private mermaidLoaded = false;
 
+  private notifyToolCalled(mermaidCode: string) {
+    try {
+      if (typeof window === "undefined") return;
+      window.dispatchEvent(
+        new CustomEvent("agent_tool_called", {
+          detail: {
+            tool: this.name,
+            inputPreview: mermaidCode.slice(0, 200),
+            timestamp: new Date().toISOString(),
+          },
+        })
+      );
+    } catch {
+      // best-effort only
+    }
+  }
+
   async _call(input: string): Promise<string> {
     try {
       const mermaidCode = input.trim();
@@ -14,6 +31,7 @@ export class MermaidDiagramTool extends Tool {
         return "Error: No Mermaid code provided. Please provide valid Mermaid diagram code.";
       }
 
+      this.notifyToolCalled(mermaidCode);
       const validMermaidTypes = [
         'graph', 'flowchart', 'sequenceDiagram', 'classDiagram',
         'stateDiagram', 'erDiagram', 'journey', 'gantt', 'pie', 'gitgraph'

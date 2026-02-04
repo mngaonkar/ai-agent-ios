@@ -3,6 +3,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { HumanMessage } from "@langchain/core/messages";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { MermaidDiagramTool } from "./mermaid-tool";
+import { WebSearchTool } from "./web-search-tool";
 import { StateGraph, MessagesAnnotation } from "@langchain/langgraph/web";
 import { Client } from "langsmith";
 import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
@@ -135,11 +136,13 @@ export class LangGraphAgent {
         console.log('LangGraphAgent: LangSmith tracing disabled (no API key)');
       }
 
+      const webSearchTool = new WebSearchTool();
       this.summerizeAgent = createReactAgent({
         llm: llm,
-        tools: [],
-        prompt: "you are a summerize agent and have access to the content of the page. \
-        You summerize the content of the page to highlight the most important architecture and design patterns.",
+        tools: [webSearchTool],
+        prompt: "you are a summerize agent and have access to the content of the page and a web search tool. \
+        You summerize the content of the page to highlight the most important architecture and design patterns. \
+        You can also use the web search tool to find additional information, current events, or facts that are not available in the page content.",
       });
       console.log('LangGraphAgent: Summerize agent created successfully');
 
