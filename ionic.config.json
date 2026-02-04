@@ -1,0 +1,7 @@
+{
+  "name": "ai-browser-assistant-ios",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
