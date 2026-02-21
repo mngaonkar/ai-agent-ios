@@ -15,6 +15,17 @@ body {
   height: 100vh;
 }
 
+.user-info-button {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.user-info-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 /* Markdown styling */
 .markdown-content h1 {
   font-size: 1.5em;

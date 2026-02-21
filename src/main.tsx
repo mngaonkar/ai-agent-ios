@@ -7,7 +7,8 @@ import { msalInstance } from './auth/msalInstance';
 
 if (authEnabled) {
   msalInstance
-    .handleRedirectPromise()
+    .initialize()
+    .then(() => msalInstance.handleRedirectPromise())
     .then((response) => {
       if (response?.account) {
         msalInstance.setActiveAccount(response.account);

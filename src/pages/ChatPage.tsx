@@ -22,6 +22,7 @@ import { storageService } from '../services/storage.service';
 import { langGraphAgentService } from '../services/langgraph-agent.service';
 import { renderMarkdown, containsMermaidDiagram } from '../utils/markdown';
 import { Message, PageData } from '../types';
+import UserInfoButtons from '../auth/UserInfoButtons';
 import './ChatPage.css';
 
 const ChatPage: React.FC = () => {
@@ -194,6 +195,7 @@ const ChatPage: React.FC = () => {
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref="/" />
+            <UserInfoButtons />
           </IonButtons>
           <IonTitle>AI Assistant</IonTitle>
           <IonButtons slot="end">

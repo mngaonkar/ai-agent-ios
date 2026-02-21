@@ -7,6 +7,7 @@ import {
   IonToolbar,
   IonButton,
   IonIcon,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -19,6 +20,7 @@ import { useHistory } from 'react-router-dom';
 import { storageService } from '../services/storage.service';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { authEnabled, loginRequest } from '../auth/authConfig';
+import UserInfoButtons from '../auth/UserInfoButtons';
 
 const HomePageWithAuth: React.FC = () => {
   const history = useHistory();
@@ -49,6 +51,9 @@ const HomePageWithAuth: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <UserInfoButtons />
+          </IonButtons>
           <IonTitle>AI Browser Assistant</IonTitle>
         </IonToolbar>
       </IonHeader>

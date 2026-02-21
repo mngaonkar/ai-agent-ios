@@ -8,7 +8,7 @@ import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './auth/ProtectedRoute';
 import { authEnabled } from './auth/authConfig';
-import { useIsAuthenticated } from '@azure/msal-react';
+import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
@@ -25,8 +25,17 @@ setupIonicReact();
 
 const LandingWithAuth: React.FC = () => {
   const isAuthenticated = useIsAuthenticated();
+  const { instance, accounts } = useMsal();
 
-  if (!isAuthenticated) {
+  React.useEffect(() => {
+    if (accounts.length > 0 && !instance.getActiveAccount()) {
+      instance.setActiveAccount(accounts[0]);
+    }
+  }, [accounts, instance]);
+
+  const hasAccount = accounts.length > 0;
+
+  if (!isAuthenticated && !hasAccount) {
     return <Redirect to="/login" />;
   }
 

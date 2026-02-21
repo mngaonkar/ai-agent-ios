@@ -14,15 +14,26 @@ import {
 } from '@ionic/react';
 import { logInOutline } from 'ionicons/icons';
 import { Redirect } from 'react-router-dom';
-import { useMsal } from '@azure/msal-react';
+import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { authEnabled, authConfig, isAuthConfigured, loginRequest } from '../auth/authConfig';
 
 const LoginPageWithAuth: React.FC = () => {
-  const { instance } = useMsal();
+  const { instance, accounts } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
 
   const handleLogin = async () => {
     await instance.loginRedirect(loginRequest);
   };
+
+  React.useEffect(() => {
+    if (accounts.length > 0 && !instance.getActiveAccount()) {
+      instance.setActiveAccount(accounts[0]);
+    }
+  }, [accounts, instance]);
+
+  if (isAuthenticated || accounts.length > 0) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <IonPage>

@@ -23,6 +23,7 @@ import { useHistory } from 'react-router-dom';
 import { storageService } from '../services/storage.service';
 import { langGraphAgentService } from '../services/langgraph-agent.service';
 import { AppConfig } from '../types';
+import UserInfoButtons from '../auth/UserInfoButtons';
 
 const ConfigPage: React.FC = () => {
   const history = useHistory();
@@ -112,6 +113,7 @@ const ConfigPage: React.FC = () => {
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref="/" />
+            <UserInfoButtons />
           </IonButtons>
           <IonTitle>Configuration</IonTitle>
         </IonToolbar>
