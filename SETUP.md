@@ -95,3 +95,16 @@ npm run dev
 Then open `http://localhost:5173` in your browser.
 
 Note: Some features (like Capacitor plugins) will only work in the native app.
+
+## Optional: Microsoft Entra (SAML-backed) SSO for Web
+
+1. Create an Entra App Registration (SPA).
+2. Add redirect URI `http://localhost:5173/` (and your production URL).
+3. Copy `.env.example` to `.env` and set:
+	- `VITE_AUTH_ENABLED=true`
+	- `VITE_ENTRA_CLIENT_ID=...`
+	- `VITE_ENTRA_TENANT_ID=...`
+	- `VITE_ENTRA_REDIRECT_URI=...`
+4. Restart `npm run dev`.
+
+If your tenant is federated with a SAML IdP, Entra will complete SAML upstream while the SPA uses OIDC.

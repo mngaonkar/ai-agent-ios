@@ -22,7 +22,6 @@ An iOS application built with Ionic and Capacitor that provides an AI-powered as
 
 1. **Install dependencies:**
    ```bash
-   cd ios-app
    npm install
    ```
 
@@ -68,6 +67,22 @@ npm run dev
 ```
 
 This will start a development server at `http://localhost:5173`
+
+### Microsoft Entra (SAML-backed) Authentication for Web
+
+This web app uses Microsoft Entra ID for SSO. Entra can be configured to use SAML with an upstream IdP,
+while the app itself uses standard OAuth 2.0 / OIDC for browser-based login.
+
+1. Create an Entra App Registration for a Single-Page Application (SPA).
+2. Add redirect URIs (e.g. `http://localhost:5173/`).
+3. (Optional) If your org requires SAML, configure Entra as a federated IdP with your SAML provider.
+4. Copy `.env.example` to `.env` and set:
+   - `VITE_AUTH_ENABLED=true`
+   - `VITE_ENTRA_CLIENT_ID=...`
+   - `VITE_ENTRA_TENANT_ID=...`
+   - `VITE_ENTRA_REDIRECT_URI=...`
+
+After configuring, restart the dev server.
 
 ### Building for iOS
 

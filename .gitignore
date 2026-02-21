@@ -45,6 +45,7 @@ android/local.properties
 .env
 .env.local
 .env.*.local
+.env.*
 
 # Capacitor
 .capacitor/
